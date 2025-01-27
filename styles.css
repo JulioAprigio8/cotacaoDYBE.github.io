@@ -18,7 +18,7 @@ h1 {
 
 .graficos-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
     margin-bottom: 20px;
 }
@@ -35,15 +35,10 @@ h1 {
     margin-bottom: 20px;
 }
 
-.valor-dolar {
-    color: #007bff;
-    font-weight: bold;
-}
-
-.valor-euro {
-    color: #28a745;
-    font-weight: bold;
-}
+.valor-dolar { color: #007bff; font-weight: bold; }
+.valor-euro { color: #28a745; font-weight: bold; }
+.valor-yuan { color: #ff5733; font-weight: bold; }
+.valor-bitcoin { color: #f2a900; font-weight: bold; }
 
 .grafico-wrapper {
     height: 300px;
@@ -54,6 +49,7 @@ h1 {
     display: flex;
     justify-content: center;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 button {
@@ -68,4 +64,23 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .graficos-container {
+        grid-template-columns: 1fr;
+    }
+
+    .valor-atual {
+        font-size: 20px;
+    }
+
+    .grafico-wrapper {
+        height: 250px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
 }

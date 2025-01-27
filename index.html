@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,38 +12,29 @@
         <h1>Cotações em Tempo Real</h1>
         <div class="graficos-container">
             <div class="grafico-box">
-                <div class="valor-atual">
-                    Yuan: R$ <span id="cotacao-yuan" class="valor-yuan">0.85</span>
-                </div>
+                <div class="valor-atual">Dólar (USD): R$ <span id="cotacao-dolar" class="valor-dolar">5.90</span></div>
                 <div class="grafico-wrapper">
-                    <canvas id="grafico-cny"></canvas>
+                    <canvas id="grafico-usd"></canvas>
                 </div>
             </div>
             <div class="grafico-box">
-                <div class="valor-atual">
-                    Bitcoin: R$ <span id="cotacao-bitcoin" class="valor-bitcoin">300.000</span>
-                </div>
-                <div class="grafico-wrapper">
-                    <canvas id="grafico-btc"></canvas>
-                </div>
-            </div>
-            <div class="grafico-box">
-                <div class="valor-atual">
-                    Euro: R$ <span id="cotacao-euro" class="valor-euro">6.19</span>
-                </div>
+                <div class="valor-atual">Euro (EUR): R$ <span id="cotacao-euro" class="valor-euro">6.19</span></div>
                 <div class="grafico-wrapper">
                     <canvas id="grafico-eur"></canvas>
                 </div>
             </div>
             <div class="grafico-box">
-                <div class="valor-atual">
-                    Dólar: R$ <span id="cotacao-dolar" class="valor-dolar">5.90</span>
-                </div>
+                <div class="valor-atual">Yuan (CNY): R$ <span id="cotacao-yuan" class="valor-yuan">0.85</span></div>
                 <div class="grafico-wrapper">
-                    <canvas id="grafico-usd"></canvas>
+                    <canvas id="grafico-cny"></canvas>
                 </div>
             </div>
-
+            <div class="grafico-box">
+                <div class="valor-atual">Bitcoin (BTC): R$ <span id="cotacao-bitcoin" class="valor-bitcoin">300.000</span></div>
+                <div class="grafico-wrapper">
+                    <canvas id="grafico-btc"></canvas>
+                </div>
+            </div>
         </div>
         <div class="botoes">
             <button onclick="mudarPeriodo('dia')">Dia</button>

@@ -5,47 +5,34 @@ function atualizarCotacoes() {
     fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,BTC-BRL')
         .then(response => response.json())
         .then(data => {
-            const cotacaoDolar = parseFloat(data.USDBRL.bid).toFixed(2);
-            const cotacaoEuro = parseFloat(data.EURBRL.bid).toFixed(2);
-            const cotacaoYuan = parseFloat(data.CNYBRL.bid).toFixed(2);
-            const cotacaoBitcoin = parseFloat(data.BTCBRL.bid).toFixed(2);
-            document.getElementById('cotacao-dolar').textContent = cotacaoDolar;
-            document.getElementById('cotacao-euro').textContent = cotacaoEuro;
-            document.getElementById('cotacao-yuan').textContent = cotacaoYuan;
-            document.getElementById('cotacao-bitcoin').textContent = cotacaoBitcoin;
+            document.getElementById('cotacao-dolar').textContent = parseFloat(data.USDBRL.bid).toFixed(2);
+            document.getElementById('cotacao-euro').textContent = parseFloat(data.EURBRL.bid).toFixed(2);
+            document.getElementById('cotacao-yuan').textContent = parseFloat(data.CNYBRL.bid).toFixed(2);
+            document.getElementById('cotacao-bitcoin').textContent = parseFloat(data.BTCBRL.bid).toFixed(2);
         })
         .catch(error => {
             console.error('Erro ao obter cotações:', error);
-            document.getElementById('cotacao-dolar').textContent = 'Indisponível';
-            document.getElementById('cotacao-euro').textContent = 'Indisponível';
-            document.getElementById('cotacao-yuan').textContent = 'Indisponível';
-            document.getElementById('cotacao-bitcoin').textContent = 'Indisponível';
+            ['dolar', 'euro', 'yuan', 'bitcoin'].forEach(moeda => {
+                document.getElementById(`cotacao-${moeda}`).textContent = 'Indisponível';
+            });
         });
 }
 
 function obterDadosHistoricos(moeda) {
-    let dias;
+    let endpoint;
     switch(periodoAtual) {
-        case 'dia': 
-            return fetch(`https://economia.awesomeapi.com.br/json/${moeda}-BRL/100`)
-                .then(response => response.json())
-                .then(data => {
-                    return data.map(item => ({
-                        data: new Date(item.timestamp * 1000),
-                        valor: parseFloat(item.bid)
-                    })).reverse();
-                });
-        case 'mes': 
-            dias = 30; 
+        case 'dia':
+            endpoint = `https://economia.awesomeapi.com.br/json/${moeda}-BRL/100`;
             break;
-        case 'ano': 
-            dias = 365; 
+        case 'mes':
+            endpoint = `https://economia.awesomeapi.com.br/json/daily/${moeda}-BRL/30`;
             break;
-        default: 
-            dias = 1;
+        case 'ano':
+            endpoint = `https://economia.awesomeapi.com.br/json/daily/${moeda}-BRL/365`;
+            break;
     }
 
-    return fetch(`https://economia.awesomeapi.com.br/json/daily/${moeda}-BRL/${dias}`)
+    return fetch(endpoint)
         .then(response => response.json())
         .then(data => {
             return data.map(item => ({
@@ -73,8 +60,8 @@ function criarGrafico(dados, moeda) {
     const graficoConfig = {
         type: 'line',
         data: {
-            labels: dados.map(item => periodoAtual === 'dia' ? 
-                item.data.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'}) : 
+            labels: dados.map(item => periodoAtual === 'dia' ?
+                item.data.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'}) :
                 item.data.toLocaleDateString('pt-BR')),
             datasets: [{
                 label: nomes[moeda],
@@ -88,7 +75,7 @@ function criarGrafico(dados, moeda) {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: true,
@@ -164,11 +151,9 @@ function atualizarGraficos() {
     });
 }
 
-// Inicialização
 document.addEventListener('DOMContentLoaded', function() {
     atualizarCotacoes();
     atualizarGraficos();
     setInterval(atualizarCotacoes, 5000);
     setInterval(atualizarGraficos, periodoAtual === 'dia' ? 60000 : 3600000);
 });
-
